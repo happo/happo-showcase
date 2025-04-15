@@ -18,10 +18,24 @@ module.exports = {
       freezeAnimations: 'last-frame',
     }),
 
+    'chrome-large-dark': new RemoteBrowserTarget('chrome', {
+      viewport: '1024x768',
+      prefersReducedMotion: true,
+      freezeAnimations: 'last-frame',
+      prefersColorScheme: 'dark',
+    }),
+
     'chrome-small': new RemoteBrowserTarget('chrome', {
       viewport: '375x667',
       prefersReducedMotion: true,
       freezeAnimations: 'last-frame',
+    }),
+
+    'chrome-small-dark': new RemoteBrowserTarget('chrome', {
+      viewport: '375x667',
+      prefersReducedMotion: true,
+      freezeAnimations: 'last-frame',
+      prefersColorScheme: 'dark',
     }),
   },
 };
