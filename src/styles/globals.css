@@ -1,10 +1,24 @@
 :root {
+  --text-color-white: oklch(100% 0 0);
+  --text-color-dark: oklch(25% 0 0);
+  --text-color-medium-dark: oklch(50% 0 0);
+  --color-primary: oklch(25% 0.75 345);
+  --color-brand-logo: oklch(66% 0.1224 174);
+  --color-secondary: oklch(63% 0.12 174);
+  --color-outline: oklch(67% 0.1707 252);
+  accent-color: var(--color-primary);
   --background: #ffffff;
   --foreground: #171717;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --text-color-white: oklch(23% 0 0 / 90%);
+    --text-color-dark: oklch(96% 0 0);
+    --text-color-medium-dark: oklch(97% 0 0 / 70%);
+    --color-brand-logo: oklch(66% 0.1224 174);
+    --color-secondary: oklch(72% 0.12 174);
+    --color-outline: oklch(100% 0 0);
     --background: #0a0a0a;
     --foreground: #ededed;
   }

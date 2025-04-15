@@ -1,0 +1,31 @@
+.signup-form {
+  padding: 1rem;
+  font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+.signup-form__field label {
+  display: block;
+  font-size: 0.875rem;
+  margin-bottom: 0.25rem;
+}
+
+.signup-form__field {
+  margin-bottom: 1rem;
+}
+
+.signup-form__field input {
+  width: 100%;
+  max-width: 20rem;
+  padding: 0.5rem;
+  border: 1px solid var(--text-color-medium-dark);
+  border-radius: 0.25rem;
+
+  &:focus {
+    outline: none;
+    border-color: var(--color-primary);
+  }
+}
+
+.signup-form__actions {
+  padding-top: 0.5rem;
+}

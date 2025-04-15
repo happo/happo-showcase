@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "happo": "happo",
+    "happo-ci-github-actions": "happo-ci-github-actions"
   },
   "dependencies": {
     "next": "15.3.0",
@@ -32,6 +34,8 @@
     "eslint": "^9",
     "eslint-config-next": "15.3.0",
     "eslint-plugin-storybook": "^0.12.0",
+    "happo-plugin-storybook": "^4.4.3",
+    "happo.io": "^12.1.2",
     "playwright": "^1.51.1",
     "storybook": "^8.6.12",
     "typescript": "^5",
