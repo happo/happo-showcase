@@ -1,3 +1,22 @@
+:root {
+  --text-color-white: oklch(100% 0 0);
+  --text-color-dark: oklch(25% 0 0);
+  --text-color-medium-dark: oklch(50% 0 0);
+  --color-primary: oklch(25% 0.75 345);
+  --color-brand-logo: oklch(66% 0.1224 174);
+  --color-secondary: oklch(63% 0.12 174);
+  --color-outline: oklch(67% 0.1707 252);
+  accent-color: var(--color-primary);
+}
+
+[data-color-scheme='dark'] {
+  --text-color-white: oklch(23% 0 0 / 90%);
+  --text-color-dark: oklch(96% 0 0);
+  --text-color-medium-dark: oklch(97% 0 0 / 70%);
+  --color-brand-logo: oklch(66% 0.1224 174);
+  --color-secondary: oklch(72% 0.12 174);
+  --color-outline: oklch(100% 0 0);
+}
 .storybook-button {
   display: inline-block;
   cursor: pointer;
@@ -8,13 +27,12 @@
   font-family: 'Nunito Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
 }
 .storybook-button--primary {
-  background-color: #555ab9;
-  color: white;
+  background-color: var(--color-primary);
+  color: var(--text-color-white);
 }
 .storybook-button--secondary {
-  box-shadow: rgba(0, 0, 0, 0.15) 0px 0px 0px 1px inset;
-  background-color: transparent;
-  color: #333;
+  background-color: var(--color-secondary);
+  color: var(--text-color-white);
 }
 .storybook-button--small {
   padding: 10px 16px;
