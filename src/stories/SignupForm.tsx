@@ -3,11 +3,13 @@ import React from 'react';
 import './signup-form.css';
 import { Button } from './Button';
 
-export const SignupForm: React.FC = () => {
+export const SignupForm: React.FC<{ title?: string | null }> = ({
+  title = 'Sign up',
+}) => {
   return (
     <article>
       <section className="signup-form">
-        <h2>Sign up</h2>
+        {title && <h2>{title}</h2>}
         <p>Fill out the form below to create an account.</p>
         <form>
           <div className="signup-form__field">
