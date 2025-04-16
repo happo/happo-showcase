@@ -4,10 +4,13 @@ import { SignupForm } from './SignupForm';
 
 const meta = {
   component: SignupForm,
-  parameters: {
-    // More on how to position stories at: https://storybook.js.org/docs/configure/story-layout
-    layout: 'fullscreen',
-  },
+  decorators: [
+    Story => (
+      <div style={{ padding: '1rem' }}>
+        <Story />
+      </div>
+    ),
+  ],
 } satisfies Meta<typeof SignupForm>;
 
 export default meta;
