@@ -29,6 +29,6 @@ export const Decreasing: Story = {
     label: 'Open issues',
     value: '37',
     change: -8.2,
-    trend: [40, 42, 39, 44, 41, 38, 40, 36, 35, 37, 33],
+    trend: [40, 42, 39, 44, 41, 38.1, 40, 36, 35, 37, 33],
   },
 };
