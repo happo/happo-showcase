@@ -5,7 +5,7 @@ import './toast.css';
 
 // Read by the animated Happo story, so the capture window always matches the
 // animation.
-export const ENTER_DURATION_MS = 450;
+export const ENTER_DURATION_MS = 600;
 
 const icons: Record<ToastProps['tone'] & string, IconName> = {
   success: 'checkCircle',
