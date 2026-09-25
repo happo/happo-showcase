@@ -46,13 +46,13 @@ export function SignupForm({
         defaultValue={defaultValues.password}
         error={errors.password}
       />
-      <label className="signup-form__terms">
+      <div className="signup-form__terms">
         <input type="checkbox" name="terms" />
         <span>
-          I agree to the <a href="#">Terms of Service</a> and{' '}
+          I agree to the <a href="#">Terms</a> and{' '}
           <a href="#">Privacy Policy</a>.
         </span>
-      </label>
+      </div>
       <Button type="submit" size="lg" fullWidth>
         Create account
       </Button>

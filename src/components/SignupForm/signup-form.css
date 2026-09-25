@@ -1,7 +1,7 @@
 .signup-form {
   display: flex;
   flex-direction: column;
-  gap: 18px;
+  gap: 14px;
   width: 100%;
   max-width: 400px;
 }
@@ -37,8 +37,8 @@
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  color: var(--text-muted);
-  font-size: 13px;
+  color: #a3abb8;
+  font-size: 12px;
 }
 
 .signup-form__terms input {
@@ -49,8 +49,8 @@
 }
 
 .signup-form__footer {
-  color: var(--text-muted);
-  font-size: 13px;
+  color: #a3abb8;
+  font-size: 12px;
   text-align: center;
 }
 
