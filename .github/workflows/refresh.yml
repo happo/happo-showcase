@@ -27,9 +27,13 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         run: |
           git fetch --quiet origin '+refs/pull/*/head:refs/remotes/pull/*'
+          # The multi-project demo PRs are only used for their GitHub checks,
+          # which don't expire. Re-running one project there would add a
+          # status that doesn't belong, e.g. next to an orchestrated one.
           prs=$(gh pr list --label docs-demo --state open \
-            --json number,title,url,headRefOid --jq '
-              map({number, title, url, sha: .headRefOid})')
+            --json number,title,url,headRefOid,headRefName --jq '
+              map(select(.headRefName | startswith("demo/multi-project") | not)
+                | {number, title, url, sha: .headRefOid})')
           prs=$(echo "$prs" | jq -c '.[]' | while read -r pr; do
             sha=$(echo "$pr" | jq -r .sha)
             base=$(git merge-base origin/main "$sha")
