@@ -50,7 +50,7 @@ export const Stack: Story = {
 export const Entering: Story = {
   decorators: [
     Story => (
-      <div style={{ padding: 48 }}>
+      <div style={{ width: 480, padding: '40px 24px' }}>
         <Story />
       </div>
     ),
