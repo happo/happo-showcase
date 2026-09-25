@@ -6,7 +6,7 @@ import '../src/styles/global.css';
 const preview: Preview = {
   decorators: [happoDecorator],
   parameters: {
-    layout: 'centered',
+    layout: 'padded',
   },
 };
 

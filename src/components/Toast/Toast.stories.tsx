@@ -44,7 +44,17 @@ export const Stack: Story = {
 
 // Captured as an animated snapshot, so reviewers can see (and diff) how the
 // toast enters. https://docs.happo.io/docs/animated-snapshots
+//
+// The stage leaves room around the toast, so the snapshot stays the same size
+// while the toast moves.
 export const Entering: Story = {
+  decorators: [
+    Story => (
+      <div style={{ padding: 48 }}>
+        <Story />
+      </div>
+    ),
+  ],
   parameters: {
     happo: {
       animate: {

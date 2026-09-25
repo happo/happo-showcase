@@ -47,7 +47,6 @@ export const Featured: Story = {
 };
 
 export const Plans: Story = {
-  parameters: { layout: 'padded' },
   render: () => (
     <div className="pricing-grid">
       {Object.values(plans).map(plan => (
