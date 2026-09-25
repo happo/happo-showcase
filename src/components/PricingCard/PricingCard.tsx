@@ -38,7 +38,7 @@ export function PricingCard({
       <ul className="pricing-card__features">
         {features.map(feature => (
           <li key={feature}>
-            <Icon name="check" size={16} />
+            <Icon name="check" size={12} strokeWidth={3} />
             {feature}
           </li>
         ))}
