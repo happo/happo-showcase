@@ -19,7 +19,7 @@ export interface DashboardProps {
 export function Dashboard({ userName, stats, projects }: DashboardProps) {
   return (
     <div className="dashboard">
-      <Header user={{ name: userName }} hasNotifications />
+      <Header user={{ name: userName }} unreadCount={3} />
       <main className="dashboard__main">
         <div className="dashboard__intro">
           <div>
