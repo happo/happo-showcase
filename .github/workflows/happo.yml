@@ -1,18 +1,24 @@
-name: Happo Workflow
+name: Happo
+
 on:
-  push: { branches: [main] }
-  pull_request: { branches: [main] }
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
 jobs:
   happo:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
-          ref: ${{ github.event.pull_request.head.sha || github.ref }}
-          fetch-depth: 100
-      - uses: actions/setup-node@v4
-      - run: yarn install --frozen-lockfile
-      - run: yarn happo-ci-github-actions
+          # Build the PR's own commit, not the merge commit GitHub creates.
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          # Happo compares against the merge base with origin/main.
+          fetch-depth: 0
+      - uses: ./.github/actions/setup
+      - run: pnpm happo
         env:
           HAPPO_API_KEY: ${{ secrets.HAPPO_API_KEY }}
           HAPPO_API_SECRET: ${{ secrets.HAPPO_API_SECRET }}

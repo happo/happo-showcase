@@ -1,17 +1,12 @@
-import type { StorybookConfig } from '@storybook/experimental-nextjs-vite';
+import type { StorybookConfig } from '@storybook/react-vite';
 
 const config: StorybookConfig = {
-  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
-  addons: [
-    '@storybook/addon-essentials',
-    '@storybook/addon-onboarding',
-    '@storybook/experimental-addon-test',
-    'happo-plugin-storybook/preset',
+  stories: [
+    { directory: '../src/components', titlePrefix: 'Components' },
+    { directory: '../src/pages', titlePrefix: 'Pages' },
   ],
-  framework: {
-    name: '@storybook/experimental-nextjs-vite',
-    options: {},
-  },
-  staticDirs: ['../public'],
+  addons: ['happo/storybook/preset'],
+  framework: '@storybook/react-vite',
 };
+
 export default config;

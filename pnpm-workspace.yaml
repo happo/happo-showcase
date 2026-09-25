@@ -1,0 +1,9 @@
+allowBuilds:
+  esbuild: false
+
+savePrefix: ''
+
+# Wait two days before installing new releases, except for our own package.
+minimumReleaseAge: 2880
+minimumReleaseAgeExclude:
+  - happo
