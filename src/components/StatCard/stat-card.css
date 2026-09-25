@@ -1,0 +1,83 @@
+.stat-card {
+  padding: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+}
+
+.stat-card__label {
+  margin-bottom: 8px;
+  color: var(--text-muted);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.stat-card__body {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.stat-card__value {
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.2;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-card__change {
+  display: inline-flex;
+  white-space: nowrap;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.stat-card__change span {
+  color: var(--text-subtle);
+  font-weight: 400;
+}
+
+.stat-card__change--up {
+  color: var(--primary);
+}
+
+.stat-card__change--down {
+  color: var(--danger);
+}
+
+.stat-card__sparkline {
+  flex-shrink: 1;
+  min-width: 56px;
+  max-width: 96px;
+  height: auto;
+}
+
+.stat-card__line {
+  fill: none;
+  stroke-width: 2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.stat-card__sparkline--up {
+  color: var(--primary);
+}
+
+.stat-card__sparkline--down {
+  color: var(--danger);
+}
+
+.stat-card__line {
+  stroke: currentColor;
+}
+
+.stat-card__area {
+  fill: currentColor;
+  opacity: 0.1;
+}

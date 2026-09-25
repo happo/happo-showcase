@@ -1,0 +1,96 @@
+.toast {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  width: 360px;
+  max-width: 100%;
+  padding: 14px 14px 14px 16px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  animation-name: toast-enter;
+  animation-timing-function: cubic-bezier(0.2, 0.9, 0.3, 1.15);
+  animation-fill-mode: both;
+}
+
+@keyframes toast-enter {
+  from {
+    opacity: 0;
+    transform: translateY(16px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .toast {
+    animation: none;
+  }
+}
+
+.toast__icon {
+  display: inline-flex;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.toast--success .toast__icon {
+  color: var(--primary);
+}
+
+.toast--error .toast__icon {
+  color: var(--danger);
+}
+
+.toast--info .toast__icon {
+  color: var(--info-soft-text);
+}
+
+.toast__content {
+  flex: 1;
+  min-width: 0;
+}
+
+.toast__title {
+  font-weight: 600;
+}
+
+.toast__body {
+  margin-top: 2px;
+  color: var(--text-muted);
+}
+
+.toast__action {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.toast__dismiss {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 28px;
+  height: 28px;
+  margin: -4px -4px 0 0;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  color: var(--text-muted);
+  cursor: pointer;
+}
+
+.toast__dismiss:hover {
+  background: var(--neutral-soft);
+  color: var(--text);
+}
+
+.toast-stack {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}

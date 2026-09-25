@@ -1,0 +1,83 @@
+# The Happo docs link to reports for the long-lived demo PRs in this repo
+# (labeled `docs-demo`). Reports don't live forever, so this re-runs Happo
+# for each of those PRs and for the main-branch commits they compare against.
+name: Refresh demo reports
+
+on:
+  schedule:
+    - cron: '0 6 1 * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: read
+
+jobs:
+  plan:
+    runs-on: ubuntu-latest
+    outputs:
+      baselines: ${{ steps.plan.outputs.baselines }}
+      prs: ${{ steps.plan.outputs.prs }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: plan
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          git fetch --quiet origin '+refs/pull/*/head:refs/remotes/pull/*'
+          prs=$(gh pr list --label docs-demo --state open \
+            --json number,title,url,headRefOid --jq '
+              map({number, title, url, sha: .headRefOid})')
+          prs=$(echo "$prs" | jq -c '.[]' | while read -r pr; do
+            sha=$(echo "$pr" | jq -r .sha)
+            base=$(git merge-base origin/main "$sha")
+            echo "$pr" | jq -c --arg base "$base" '. + {base: $base}'
+          done | jq -sc .)
+          baselines=$(echo "$prs" | jq -c --arg main "$(git rev-parse origin/main)" \
+            '[.[].base, $main] | unique')
+          echo "prs=$prs" >> "$GITHUB_OUTPUT"
+          echo "baselines=$baselines" >> "$GITHUB_OUTPUT"
+          echo "PRs: $prs"
+          echo "Baselines: $baselines"
+
+  # A report for each commit the demo PRs are compared against.
+  baseline:
+    needs: plan
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        sha: ${{ fromJSON(needs.plan.outputs.baselines) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.sha }}
+      - uses: ./.github/actions/setup
+      # Same before and after SHA: create a report without a comparison.
+      - run:
+          pnpm happo --beforeSha ${{ matrix.sha }} --afterSha ${{ matrix.sha }}
+        env:
+          HAPPO_API_KEY: ${{ secrets.HAPPO_API_KEY }}
+          HAPPO_API_SECRET: ${{ secrets.HAPPO_API_SECRET }}
+
+  pr:
+    needs: [plan, baseline]
+    if: needs.plan.outputs.prs != '[]'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        pr: ${{ fromJSON(needs.plan.outputs.prs) }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ matrix.pr.sha }}
+      - uses: ./.github/actions/setup
+      - run: >-
+          pnpm happo --beforeSha ${{ matrix.pr.base }} --afterSha ${{
+          matrix.pr.sha }} --link "${{ matrix.pr.url }}" --message "$PR_TITLE"
+        env:
+          PR_TITLE: ${{ matrix.pr.title }}
+          HAPPO_API_KEY: ${{ secrets.HAPPO_API_KEY }}
+          HAPPO_API_SECRET: ${{ secrets.HAPPO_API_SECRET }}
