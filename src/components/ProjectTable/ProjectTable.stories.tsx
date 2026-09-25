@@ -5,7 +5,6 @@ import { ProjectTable } from './ProjectTable';
 
 const meta = {
   component: ProjectTable,
-  parameters: { layout: 'padded' },
   args: { projects },
 } satisfies Meta<typeof ProjectTable>;
 
