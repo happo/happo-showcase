@@ -13,7 +13,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const LoggedIn: Story = {
-  args: { user: { name: 'Maya Chen' }, hasNotifications: true },
+  args: { user: { name: 'Maya Chen' }, unreadCount: 3 },
 };
 
 export const LoggedOut: Story = {};

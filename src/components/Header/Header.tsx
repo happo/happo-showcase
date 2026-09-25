@@ -9,7 +9,7 @@ const links = ['Overview', 'Projects', 'Reports', 'Billing'];
 export interface HeaderProps {
   user?: { name: string };
   active?: string;
-  hasNotifications?: boolean;
+  unreadCount?: number;
   onLogIn?: () => void;
   onSignUp?: () => void;
 }
@@ -17,7 +17,7 @@ export interface HeaderProps {
 export function Header({
   user,
   active = 'Overview',
-  hasNotifications = false,
+  unreadCount = 0,
   onLogIn,
   onSignUp,
 }: HeaderProps) {
@@ -50,12 +50,16 @@ export function Header({
               <button
                 className="header__icon-button"
                 aria-label={
-                  hasNotifications ? 'Notifications (unread)' : 'Notifications'
+                  unreadCount
+                    ? `Notifications (${unreadCount} unread)`
+                    : 'Notifications'
                 }
               >
                 <Icon name="bell" size={18} />
-                {hasNotifications && (
-                  <span className="header__badge" aria-hidden="true" />
+                {unreadCount > 0 && (
+                  <span className="header__badge" aria-hidden="true">
+                    {unreadCount > 9 ? '9+' : unreadCount}
+                  </span>
                 )}
               </button>
               <Avatar name={user.name} size="sm" />
