@@ -8,9 +8,43 @@ on:
   workflow_dispatch:
 
 # Two Happo projects: the Storybook components (happo.config.ts) and the
-# Playwright end-to-end tests (happo.e2e.config.ts). Each posts its own status.
+# Playwright end-to-end tests (happo.e2e.config.ts). On pull requests they're
+# orchestrated into one Happo job, which posts one combined status.
+# https://docs.happo.io/docs/multi-project
 jobs:
+  # Tells Happo which projects to expect for this PR's comparison before
+  # either of them starts. Pushes to main only create reports, so there's
+  # nothing to orchestrate there.
+  orchestrate:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+      # The same before and after SHAs that the Happo CLI uses for a PR.
+      - run: |
+          before_sha=$(git merge-base "$BASE_SHA" "$HEAD_SHA")
+          jq -n --arg link "$PR_URL" --arg message "$PR_TITLE" '{
+            projects: ["happo-showcase", "happo-showcase-e2e"],
+            link: $link,
+            message: $message
+          }' | curl --fail-with-body --silent --show-error --json @- \
+            -u "$HAPPO_API_KEY:$HAPPO_API_SECRET" \
+            "https://happo.io/api/jobs/$before_sha/$HEAD_SHA/orchestrate"
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+          PR_URL: ${{ github.event.pull_request.html_url }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+          HAPPO_API_KEY: ${{ secrets.HAPPO_API_KEY }}
+          HAPPO_API_SECRET: ${{ secrets.HAPPO_API_SECRET }}
+
   happo:
+    needs: orchestrate
+    # Also run when orchestrate was skipped (on pushes to main).
+    if: ${{ !failure() && !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -26,6 +60,8 @@ jobs:
           HAPPO_API_SECRET: ${{ secrets.HAPPO_API_SECRET }}
 
   e2e:
+    needs: orchestrate
+    if: ${{ !failure() && !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
