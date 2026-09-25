@@ -13,8 +13,9 @@ an [accessibility](https://docs.happo.io/docs/accessibility) target. The
 The app itself (just the dashboard page) also has a
 [Playwright](https://docs.happo.io/docs/playwright) end-to-end test that takes
 Happo screenshots. It reports to a separate Happo project, `happo-showcase-e2e`
-([multi-project setup](https://docs.happo.io/docs/multi-project)), so PRs get
-one Happo status for the components and one for the end-to-end tests.
+([multi-project setup](https://docs.happo.io/docs/multi-project)). On PRs, the
+[Happo workflow](.github/workflows/happo.yml) orchestrates both projects into
+one Happo job, so each PR gets one combined Happo status.
 
 ## Getting started
 
@@ -58,8 +59,8 @@ Happo report through the GitHub API when screenshots are taken, so the PRs
 themselves are the only thing that has to stay put.
 
 The two multi-project PRs (`demo/multi-project*`) are only used for their GitHub
-checks, so the workflow below skips them. The orchestrated one calls Happo's
-orchestration API in its own copy of the Happo workflow.
+checks, so the workflow below skips them. The one with separate statuses leaves
+out the orchestration step in its own copy of the Happo workflow.
 
 Reports don't live forever. The
 [Refresh demo reports](.github/workflows/refresh.yml) workflow re-runs Happo
