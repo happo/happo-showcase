@@ -1,0 +1,31 @@
+name: Merrykat
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+# Only the latest commit for a branch or PR matters; drop runs it supersedes.
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+  # Merrykat authenticates with a GitHub OIDC token, so no API key is needed.
+  id-token: write
+
+jobs:
+  merrykat:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Build the PR's own commit, not the merge commit GitHub creates.
+          # Empty on pushes, where checkout falls back to github.sha.
+          ref: ${{ github.event.pull_request.head.sha }}
+          # Merrykat resolves the baseline and diff from local git history.
+          fetch-depth: 0
+      - uses: ./.github/actions/setup
+      - run: pnpm build-storybook
+      - run: npx merrykat upload --dir storybook-static
