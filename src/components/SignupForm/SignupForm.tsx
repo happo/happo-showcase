@@ -37,6 +37,19 @@ export function SignupForm({
         defaultValue={defaultValues.email}
         error={errors.email}
       />
+      <select
+        className="signup-form__select"
+        name="companySize"
+        defaultValue=""
+      >
+        <option value="" disabled>
+          Company size
+        </option>
+        <option value="1-10">1–10 people</option>
+        <option value="11-50">11–50 people</option>
+        <option value="51-200">51–200 people</option>
+        <option value="201+">201+ people</option>
+      </select>
       <TextField
         label="Password"
         name="password"

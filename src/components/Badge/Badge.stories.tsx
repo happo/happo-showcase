@@ -34,7 +34,6 @@ export const Tones: Story = {
   ),
 };
 
-export const WithDot: Story = {
-  ...Tones,
-  args: { dot: true },
+export const Beta: Story = {
+  args: { tone: 'info', dot: true, children: 'Beta' },
 };
