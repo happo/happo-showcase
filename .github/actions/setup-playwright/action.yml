@@ -1,0 +1,76 @@
+name: Setup Playwright
+description: >
+  Install the browsers Playwright needs, restoring them from the Actions cache
+  when possible, and export PLAYWRIGHT_BROWSERS_PATH for later steps. Run after
+  ./.github/actions/setup.
+
+inputs:
+  browsers:
+    description:
+      'What `playwright install` gets, space-separated: chromium, firefox,
+      webkit.'
+    required: false
+    default: 'chromium'
+  with-deps:
+    description: >
+      Also install the system packages the browsers need (never cached).
+      ubuntu-latest already has Chromium's; Firefox and WebKit need them.
+    required: false
+    default: 'false'
+
+runs:
+  using: 'composite'
+  steps:
+    # @playwright/test reports playwright-core's version, which fixes the
+    # browser builds, so it goes in the cache key.
+    - name: Read Playwright version
+      id: playwright
+      shell: bash
+      run: |
+        version=$(pnpm exec playwright --version)
+        version=${version#Version }
+        echo "Playwright $version"
+        echo "version=$version" >> "$GITHUB_OUTPUT"
+        # Browsers as the cache key has them: chromium-firefox.
+        read -ra list <<< "$BROWSERS"
+        echo "browsers=$(IFS=-; echo "${list[*]}")" >> "$GITHUB_OUTPUT"
+        # The same folder on every OS, so the cache path below is right
+        # everywhere and later steps find the browsers.
+        echo "path=$HOME/.cache/ms-playwright" >> "$GITHUB_OUTPUT"
+        echo "PLAYWRIGHT_BROWSERS_PATH=$HOME/.cache/ms-playwright" >> "$GITHUB_ENV"
+      env:
+        BROWSERS: ${{ inputs.browsers }}
+
+    - name: Restore Playwright browsers
+      id: cache
+      uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ${{ steps.playwright.outputs.path }}
+        key:
+          ${{ runner.os }}-${{ runner.arch }}-playwright-${{
+          steps.playwright.outputs.version }}-${{
+          steps.playwright.outputs.browsers }}
+
+    # Runs on a cache hit too, where it finds the browsers and downloads
+    # nothing, so a cache missing one still ends with every browser, and
+    # --with-deps still installs the system packages, which the cache does not
+    # hold.
+    - name: Install Playwright browsers
+      shell: bash
+      run: |
+        read -ra list <<< "$BROWSERS"
+        pnpm exec playwright install ${WITH_DEPS:+--with-deps} "${list[@]}"
+      env:
+        BROWSERS: ${{ inputs.browsers }}
+        WITH_DEPS: ${{ inputs.with-deps == 'true' && 'true' || '' }}
+
+    # Saved on a miss from any run. A pull request's entry is only visible to
+    # that pull request's runs, and once main has saved one, pull requests
+    # restore main's and save nothing. Saved here rather than at the end of
+    # the job, so a failing run still saves it.
+    - name: Save Playwright browsers
+      if: steps.cache.outputs.cache-hit != 'true'
+      uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+      with:
+        path: ${{ steps.playwright.outputs.path }}
+        key: ${{ steps.cache.outputs.cache-primary-key }}
