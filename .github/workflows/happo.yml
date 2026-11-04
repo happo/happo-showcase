@@ -73,7 +73,9 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha || github.sha }}
           fetch-depth: 0
       - uses: ./.github/actions/setup
-      - run: pnpm exec playwright install --with-deps chromium
+      # Chromium from the Actions cache. ubuntu-latest already has the system
+      # packages it needs.
+      - uses: ./.github/actions/setup-playwright
       - run: pnpm happo:e2e
         env:
           HAPPO_API_KEY: ${{ secrets.HAPPO_API_KEY }}
