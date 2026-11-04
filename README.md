@@ -13,10 +13,9 @@ an [accessibility](https://docs.happo.io/docs/accessibility) target. The
 The app itself (just the dashboard page) also has a
 [Playwright](https://docs.happo.io/docs/playwright) end-to-end test that takes
 Happo screenshots. It reports to a separate Happo project, `happo-showcase-e2e`
-([multi-project setup](https://docs.happo.io/docs/multi-project)). Both are in
-happo's default group, so the [Happo workflow](.github/workflows/happo.yml)'s
-two runs for a PR join one Happo job, and each PR gets one combined Happo
-status.
+([multi-project setup](https://docs.happo.io/docs/multi-project)). On PRs, the
+[Happo workflow](.github/workflows/happo.yml) orchestrates both projects into
+one Happo job, so each PR gets one combined Happo status.
 
 ## Getting started
 
