@@ -9,7 +9,11 @@ on:
 
 # Two Happo projects: the Storybook components (happo.config.ts) and the
 # Playwright end-to-end tests (happo.e2e.config.ts). On pull requests they're
-# orchestrated into one Happo job, which posts one combined status.
+# orchestrated into one Happo job, which posts one combined status. happo v7
+# groups them by default too, but a grouped job can look done before the e2e
+# run, which installs Playwright first, has joined it. Orchestrating names both
+# projects up front, so the status waits for both; the grouped runs join the
+# orchestrated job instead of making their own.
 # https://docs.happo.io/docs/multi-project
 jobs:
   # Tells Happo which projects to expect for this PR's comparison before
