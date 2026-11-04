@@ -63,3 +63,14 @@
   border-radius: var(--radius-lg);
   box-shadow: var(--shadow-md);
 }
+
+.signup-form__select {
+  height: 40px;
+  padding: 0 12px;
+  background: var(--surface);
+  color: var(--text-muted);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-sm);
+  font: inherit;
+}
